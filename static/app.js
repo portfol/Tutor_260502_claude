@@ -64,6 +64,12 @@ const $search = document.getElementById('companySearch');
 const $results = document.getElementById('searchResults');
 const $status = document.getElementById('fetchStatus');
 const $preview = document.getElementById('fetchPreview');
+const $directRegisterBtn = document.getElementById('directRegisterBtn');
+
+function extractTicker(raw) {
+  const match = (raw || '').match(/\b\d{6}\b/);
+  return match ? match[0] : '';
+}
 
 $search.addEventListener('input', () => {
   clearTimeout(_searchTimer);
@@ -88,11 +94,15 @@ $search.addEventListener('keydown', (e) => {
       pickCompany(_searchResults[_searchActiveIdx]);
     } else if (_searchResults[0]) {
       pickCompany(_searchResults[0]);
+    } else {
+      registerFromInput();
     }
   } else if (e.key === 'Escape') {
     hideResults();
   }
 });
+
+$directRegisterBtn.addEventListener('click', registerFromInput);
 
 document.addEventListener('click', (e) => {
   if (!$results.contains(e.target) && e.target !== $search) hideResults();
@@ -132,13 +142,32 @@ async function doSearch(q) {
 }
 
 async function pickCompany(c) {
+  return registerTicker(c.ticker, c.name);
+}
+
+async function registerFromInput() {
   hideResults();
-  $search.value = `${c.name} (${c.ticker})`;
+  const raw = $search.value.trim();
+  const ticker = extractTicker(raw);
+
+  if (!ticker) {
+    $status.style.color = '#dc2626';
+    $status.textContent = '6자리 종목코드를 입력해 주세요. 예: 삼성전자 005930, 카카오 035720';
+    return;
+  }
+
+  return registerTicker(ticker, raw);
+}
+
+async function registerTicker(ticker, label = '') {
+  hideResults();
+  const displayName = label || ticker;
+  $search.value = displayName.includes(ticker) ? displayName : `${displayName} (${ticker})`;
   $status.style.color = '#6b7280';
-  $status.textContent = `⏳ ${c.name} (${c.ticker}) 의 10년치 재무를 DART에서 가져오는 중...`;
+  $status.textContent = `⏳ ${ticker} 의 10년치 재무를 DART에서 가져오는 중...`;
   $preview.innerHTML = '';
   try {
-    const f = await api(`/api/fetch-fundamentals/${c.ticker}`);
+    const f = await api(`/api/fetch-fundamentals/${ticker}`);
     $status.textContent = `📥 데이터 수신 완료, 저장 중...`;
     await api('/api/watchlist', {
       method: 'POST',

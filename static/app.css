@@ -58,8 +58,10 @@ pre.result { white-space: pre-wrap; word-break: break-all; font-family: 'JetBrai
 ul.reasons { margin: 8px 0; padding-left: 20px; }
 ul.reasons li { font-size: 13px; color: #4b5563; margin: 2px 0; }
 
-.search-wrap { position: relative; max-width: 600px; }
+.search-row { display: flex; gap: 8px; align-items: stretch; max-width: 720px; }
+.search-wrap { position: relative; flex: 1; min-width: 0; }
 .search-wrap input { font-size: 16px; padding: 12px 14px; }
+.search-row button { flex: 0 0 auto; min-width: 74px; }
 .autocomplete {
   position: absolute; top: 100%; left: 0; right: 0; z-index: 10;
   background: #fff; border: 1px solid #d1d5db; border-radius: 6px; margin-top: 4px;
