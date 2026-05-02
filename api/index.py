@@ -17,11 +17,12 @@ def _load_app():
             if root_str not in sys.path:
                 sys.path.insert(0, root_str)
 
-            spec = importlib.util.spec_from_file_location("vercel_main", candidate)
+            spec = importlib.util.spec_from_file_location("main", candidate)
             if spec is None or spec.loader is None:
                 break
 
             module = importlib.util.module_from_spec(spec)
+            sys.modules["main"] = module
             spec.loader.exec_module(module)
             return module.app
 

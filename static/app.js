@@ -16,8 +16,13 @@ async function api(path, opts = {}) {
   opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
   const r = await fetch(path, opts);
   if (!r.ok) {
-    const err = await r.text();
-    throw new Error(`${r.status} ${err}`);
+    const body = await r.text();
+    let message = body;
+    try {
+      const parsed = JSON.parse(body);
+      message = parsed.detail || body;
+    } catch (_) {}
+    throw new Error(`${r.status} ${message}`);
   }
   return r.json();
 }

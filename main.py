@@ -155,7 +155,10 @@ async def api_analyze(ticker: str, use_gpt: bool = True) -> dict[str, Any]:
     if not entry:
         raise HTTPException(404, "관찰리스트에 없는 종목입니다. 먼저 등록하세요.")
 
-    f = Fundamentals(**entry["fundamentals"])
+    try:
+        f = Fundamentals(**entry["fundamentals"])
+    except Exception as e:
+        raise HTTPException(502, f"저장된 재무 데이터 변환 실패: {e}") from e
 
     current_price = 0.0
     price_error = ""
@@ -166,10 +169,13 @@ async def api_analyze(ticker: str, use_gpt: bool = True) -> dict[str, Any]:
     except Exception as e:
         price_error = f"가격 조회 실패 (pykrx): {e}"
 
-    sig = generate_signal(
-        f, current_price=current_price,
-        margin_of_safety=settings.margin_of_safety,
-    )
+    try:
+        sig = generate_signal(
+            f, current_price=current_price,
+            margin_of_safety=settings.margin_of_safety,
+        )
+    except Exception as e:
+        raise HTTPException(502, f"버핏 정량 분석 실패: {e}") from e
 
     result: dict[str, Any] = {
         "ticker": ticker,
