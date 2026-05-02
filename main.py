@@ -157,9 +157,15 @@ async def api_analyze(ticker: str, use_gpt: bool = True) -> dict[str, Any]:
 
     f = Fundamentals(**entry["fundamentals"])
 
-    import price_client
+    current_price = 0.0
+    price_error = ""
+    try:
+        import price_client
 
-    current_price = await price_client.get_current_price(ticker) or 0.0
+        current_price = await price_client.get_current_price(ticker) or 0.0
+    except Exception as e:
+        price_error = f"가격 조회 실패 (pykrx): {e}"
+
     sig = generate_signal(
         f, current_price=current_price,
         margin_of_safety=settings.margin_of_safety,
@@ -168,6 +174,7 @@ async def api_analyze(ticker: str, use_gpt: bool = True) -> dict[str, Any]:
     result: dict[str, Any] = {
         "ticker": ticker,
         "current_price": current_price,
+        "price_error": price_error,
         "signal": {
             "action": sig.action,
             "intrinsic_per_share": sig.intrinsic_per_share,

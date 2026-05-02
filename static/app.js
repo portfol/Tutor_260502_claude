@@ -218,6 +218,9 @@ async function runAnalyze() {
 
 function renderAnalyze(r) {
   const s = r.signal;
+  const priceWarning = r.price_error
+    ? `<p style="color:#dc2626">가격 조회 경고: ${r.price_error}</p>`
+    : '';
   const checks = Object.entries(s.screen.checks).map(([k, v]) =>
     `<div class="check ${v ? 'pass' : 'fail'}">${v ? '✓' : '✗'} ${k}</div>`).join('');
   const reasons = s.reasons.map(x => `<li>${x}</li>`).join('');
@@ -241,6 +244,7 @@ function renderAnalyze(r) {
   }
 
   return `
+    ${priceWarning}
     <div class="metric-grid">
       <div class="metric"><div class="label">정량 시그널</div><div class="value"><span class="tag ${s.action}">${s.action}</span></div></div>
       <div class="metric"><div class="label">현재가</div><div class="value">${fmt(r.current_price)}</div></div>
