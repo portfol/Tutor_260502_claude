@@ -81,7 +81,10 @@ async def search_companies(query: str, limit: int = 15) -> list[dict[str, str]]:
     q = (query or "").strip().lower()
     if not q:
         return []
-    mp = await _get_corp_code_map()
+    try:
+        mp = await _get_corp_code_map()
+    except RuntimeError as e:
+        raise RuntimeError(f"{e} Vercel 환경변수에 DART_API_KEY를 등록한 뒤 재배포하세요.") from e
 
     exact: list[dict[str, str]] = []
     prefix: list[dict[str, str]] = []
