@@ -1,0 +1,28 @@
+# 환경 변수 (API 키 포함)
+.env
+
+# IDE / 에디터
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Claude
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 런타임 데이터 (자동 생성)
+data/corp_code_map.json
+data/watchlist.json

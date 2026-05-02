@@ -1,0 +1,78 @@
+* { box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif; margin: 0; background: #f5f7fa; color: #1f2937; }
+header { background: #111827; color: #f9fafb; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+header h1 { margin: 0; font-size: 20px; flex: 1; }
+header h1 small { font-weight: 400; color: #9ca3af; font-size: 14px; margin-left: 8px; }
+.status-pill { padding: 4px 10px; border-radius: 999px; background: #374151; font-size: 12px; }
+.status-pill.safe { background: #065f46; }
+.status-pill.danger { background: #991b1b; }
+
+.tabs { display: flex; background: #fff; border-bottom: 1px solid #e5e7eb; padding: 0 16px; flex-wrap: wrap; }
+.tabs button { background: none; border: none; padding: 12px 16px; cursor: pointer; font-size: 14px; color: #4b5563; border-bottom: 3px solid transparent; }
+.tabs button.active { color: #111827; border-bottom-color: #2563eb; font-weight: 600; }
+
+main { padding: 24px; max-width: 1200px; margin: 0 auto; }
+.tab { display: none; }
+.tab.active { display: block; }
+
+h2 { margin-top: 0; }
+.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+label { display: block; font-size: 13px; color: #374151; margin-bottom: 8px; }
+input[type="text"], input[type="number"], input:not([type]), select { width: 100%; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; background: #fff; }
+input[type="checkbox"] { width: auto; margin-right: 6px; }
+
+button { padding: 8px 14px; background: #2563eb; color: #fff; border: 0; border-radius: 6px; cursor: pointer; font-size: 14px; }
+button:hover { background: #1d4ed8; }
+button.secondary { background: #6b7280; }
+
+table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+th { background: #f9fafb; font-weight: 600; }
+
+.result { background: #fff; padding: 16px; border-radius: 8px; margin-top: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+pre.result { white-space: pre-wrap; word-break: break-all; font-family: 'JetBrains Mono', Consolas, monospace; font-size: 12px; }
+
+.hint { color: #6b7280; font-size: 13px; }
+
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.tag.BUY { background: #d1fae5; color: #065f46; }
+.tag.SELL { background: #fee2e2; color: #991b1b; }
+.tag.HOLD { background: #dbeafe; color: #1e40af; }
+.tag.WATCH { background: #fef3c7; color: #92400e; }
+.tag.SKIP { background: #f3f4f6; color: #374151; }
+
+.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 12px 0; }
+.metric { background: #f9fafb; padding: 12px; border-radius: 6px; }
+.metric .label { font-size: 12px; color: #6b7280; }
+.metric .value { font-size: 18px; font-weight: 700; margin-top: 4px; }
+.metric .value.pos { color: #059669; }
+.metric .value.neg { color: #dc2626; }
+
+.checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 6px; margin: 8px 0; }
+.check { padding: 6px 10px; border-radius: 4px; font-size: 13px; }
+.check.pass { background: #d1fae5; }
+.check.fail { background: #fee2e2; }
+
+ul.reasons { margin: 8px 0; padding-left: 20px; }
+ul.reasons li { font-size: 13px; color: #4b5563; margin: 2px 0; }
+
+.search-wrap { position: relative; max-width: 600px; }
+.search-wrap input { font-size: 16px; padding: 12px 14px; }
+.autocomplete {
+  position: absolute; top: 100%; left: 0; right: 0; z-index: 10;
+  background: #fff; border: 1px solid #d1d5db; border-radius: 6px; margin-top: 4px;
+  max-height: 360px; overflow-y: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  display: none;
+}
+.autocomplete.visible { display: block; }
+.autocomplete .item {
+  padding: 10px 14px; cursor: pointer; border-bottom: 1px solid #f3f4f6;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.autocomplete .item:hover, .autocomplete .item.active { background: #eff6ff; }
+.autocomplete .item:last-child { border-bottom: 0; }
+.autocomplete .item .name { font-weight: 500; }
+.autocomplete .item .ticker { color: #6b7280; font-family: 'JetBrains Mono', Consolas, monospace; font-size: 13px; }
+.autocomplete .empty { padding: 12px 14px; color: #6b7280; font-size: 13px; }

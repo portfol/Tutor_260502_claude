@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>버핏 봇 - DART 분석 & 백테스트</title>
+<link rel="stylesheet" href="/static/app.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<header>
+  <h1>📈 버핏 봇 <small>가치투자 분석 & 백테스트</small></h1>
+  <div class="status-pill">데이터: DART + KRX</div>
+  <div class="status-pill">안전마진 {{ (margin_of_safety * 100) | int }}%</div>
+</header>
+
+<nav class="tabs">
+  <button data-tab="watchlist" class="active">관찰리스트</button>
+  <button data-tab="add">종목 등록</button>
+  <button data-tab="analyze">분석</button>
+  <button data-tab="backtest">백테스트</button>
+</nav>
+
+<main>
+  <!-- 관찰리스트 -->
+  <section id="tab-watchlist" class="tab active">
+    <div class="row">
+      <h2>관찰리스트</h2>
+      <button onclick="loadWatchlist()">새로고침</button>
+    </div>
+    <table id="watchlistTable">
+      <thead>
+        <tr>
+          <th>티커</th><th>회사명</th><th>산업</th><th>메모</th><th>액션</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- 등록 -->
+  <section id="tab-add" class="tab">
+    <h2>종목 등록</h2>
+    <p class="hint">회사명 또는 종목코드로 검색하고 클릭하면 DART에서 10년치 재무를 자동으로 가져와 저장합니다.</p>
+
+    <div class="search-wrap">
+      <input id="companySearch" type="text" autocomplete="off"
+             placeholder="예: 삼성전자, 카카오, 005930 ..." />
+      <div id="searchResults" class="autocomplete"></div>
+    </div>
+
+    <div id="fetchStatus" class="hint" style="margin-top:12px"></div>
+    <div id="fetchPreview"></div>
+  </section>
+
+  <!-- 분석 -->
+  <section id="tab-analyze" class="tab">
+    <h2>버핏 분석 + GPT 정성 평가</h2>
+    <div class="row">
+      <select id="analyzeTicker"></select>
+      <label><input type="checkbox" id="useGpt" checked> GPT 정성평가 사용</label>
+      <button onclick="runAnalyze()">분석 실행</button>
+    </div>
+    <div id="analyzeResult" class="result"></div>
+  </section>
+
+  <!-- 백테스트 -->
+  <section id="tab-backtest" class="tab">
+    <h2>백테스트 (KRX 일봉 + 버핏 분할매수 시뮬레이션)</h2>
+    <div class="row">
+      <select id="backtestTicker"></select>
+      <label>초기자본(원) <input id="btCash" type="number" value="10000000"></label>
+      <label>일수 <input id="btDays" type="number" value="1000"></label>
+      <button onclick="runBacktest()">실행</button>
+    </div>
+    <div id="backtestResult" class="result"></div>
+    <canvas id="equityChart" style="max-height:380px"></canvas>
+  </section>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
