@@ -12,20 +12,20 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 
-from openai import AsyncOpenAI
-
 from buffett_strategy import BuffettSignal, Fundamentals
 from config import settings
 
 
-_client: AsyncOpenAI | None = None
+_client = None
 
 
-def _get_client() -> AsyncOpenAI:
+def _get_client():
     global _client
     if _client is None:
         if not settings.openai_api_key:
             raise RuntimeError("OPENAI_API_KEY 가 설정되지 않았습니다 (.env 확인)")
+        from openai import AsyncOpenAI
+
         _client = AsyncOpenAI(api_key=settings.openai_api_key)
     return _client
 

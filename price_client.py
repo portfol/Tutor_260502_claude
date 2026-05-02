@@ -14,8 +14,6 @@ import asyncio
 from datetime import datetime, timedelta
 from typing import Any
 
-from pykrx import stock
-
 
 def _normalize_columns(df) -> list[dict[str, Any]]:
     """pykrx DataFrame → backtest 엔진이 쓰는 dict 리스트 (최신→과거)."""
@@ -40,6 +38,8 @@ def _normalize_columns(df) -> list[dict[str, Any]]:
 
 
 def _fetch_ohlcv_sync(ticker: str, days: int) -> list[dict[str, Any]]:
+    from pykrx import stock
+
     end = datetime.now()
     start = end - timedelta(days=int(days * 1.6) + 30)  # 영업일 보정 + 여유
     df = stock.get_market_ohlcv(start.strftime("%Y%m%d"), end.strftime("%Y%m%d"), ticker)
@@ -61,6 +61,8 @@ async def get_current_price(ticker: str) -> float | None:
 
 
 def _get_name_sync(ticker: str) -> str:
+    from pykrx import stock
+
     try:
         return stock.get_market_ticker_name(ticker) or ""
     except Exception:

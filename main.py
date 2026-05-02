@@ -31,12 +31,10 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, Field
 
 import dart_client
-import price_client
 import watchlist_store
 from backtest_engine import run_backtest
 from buffett_strategy import Fundamentals, generate_signal
 from config import settings
-from gpt_analyst import analyze_qualitative
 
 
 app = FastAPI(title="버핏 봇 - DART + pykrx 분석/백테스트")
@@ -159,6 +157,8 @@ async def api_analyze(ticker: str, use_gpt: bool = True) -> dict[str, Any]:
 
     f = Fundamentals(**entry["fundamentals"])
 
+    import price_client
+
     current_price = await price_client.get_current_price(ticker) or 0.0
     sig = generate_signal(
         f, current_price=current_price,
@@ -185,6 +185,8 @@ async def api_analyze(ticker: str, use_gpt: bool = True) -> dict[str, Any]:
 
     if use_gpt:
         try:
+            from gpt_analyst import analyze_qualitative
+
             qual = await analyze_qualitative(f, sig)
             result["gpt"] = {
                 "moat_score": qual.moat_score,
@@ -212,6 +214,8 @@ async def api_backtest(ticker: str, body: BacktestIn):
     f = Fundamentals(**entry["fundamentals"])
 
     try:
+        import price_client
+
         chart = await price_client.get_daily_chart(ticker, days=body.days)
     except Exception as e:
         raise HTTPException(502, f"가격 조회 실패 (pykrx): {e}")
