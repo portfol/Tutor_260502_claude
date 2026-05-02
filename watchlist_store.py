@@ -7,15 +7,14 @@ from __future__ import annotations
 
 import json
 from dataclasses import asdict
-from pathlib import Path
 from threading import RLock
 from typing import Any
 
 from buffett_strategy import Fundamentals
+from config import get_runtime_data_dir
 
 
-_DATA_DIR = Path(__file__).parent / "data"
-_DATA_DIR.mkdir(exist_ok=True)
+_DATA_DIR = get_runtime_data_dir()
 _WATCH_FILE = _DATA_DIR / "watchlist.json"
 
 _lock = RLock()

@@ -19,19 +19,17 @@ import logging
 import xml.etree.ElementTree as ET
 import zipfile
 from datetime import datetime
-from pathlib import Path
 from typing import Any
 
 import httpx
 
 from buffett_strategy import Fundamentals
-from config import settings
+from config import get_runtime_data_dir, settings
 
 log = logging.getLogger("dart")
 
 _BASE = "https://opendart.fss.or.kr/api"
-_DATA_DIR = Path(__file__).parent / "data"
-_DATA_DIR.mkdir(exist_ok=True)
+_DATA_DIR = get_runtime_data_dir()
 _CORP_CACHE = _DATA_DIR / "corp_code_map.json"
 
 

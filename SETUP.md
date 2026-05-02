@@ -55,6 +55,22 @@ uvicorn main:app --reload
 
 브라우저에서 http://127.0.0.1:8000
 
+## Vercel 배포
+
+이 프로젝트는 Vercel 서버리스 함수용 엔트리포인트로 `api/index.py` 를 사용합니다. GitHub에 올린 뒤 Vercel에서 같은 저장소를 import하면 `vercel.json` 의 rewrite 설정으로 FastAPI 앱이 실행됩니다.
+
+Vercel 프로젝트 설정의 Environment Variables에 최소 아래 값을 등록하세요:
+
+| 키 | 설명 |
+|---|---|
+| `DART_API_KEY` | DART 재무제표 조회용 |
+| `OPENAI_API_KEY` | GPT 정성 평가용 |
+| `OPENAI_MODEL` | 선택, 기본값 `gpt-4o-mini` |
+| `MARGIN_OF_SAFETY` | 선택, 기본값 `0.25` |
+| `SPLIT_BUY_COUNT` | 선택, 기본값 `3` |
+
+서버리스 런타임에서는 배포된 파일 시스템이 영구 저장소가 아니므로, 관찰리스트와 DART 캐시는 임시 디렉터리에 저장됩니다. 장기 저장이 필요하면 이후 DB나 Vercel KV 같은 외부 저장소로 바꾸는 것이 좋습니다.
+
 ## 사용 흐름
 
 1. **종목 등록 탭** → 티커(예: `005930`) 입력 → **📡 DART에서 자동조회** 클릭 → 10년치 재무 자동 채움 → 검토 후 **저장**

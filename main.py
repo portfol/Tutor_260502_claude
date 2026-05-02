@@ -21,6 +21,7 @@ API:
 from __future__ import annotations
 
 from dataclasses import asdict
+from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Request
@@ -39,8 +40,9 @@ from gpt_analyst import analyze_qualitative
 
 
 app = FastAPI(title="버핏 봇 - DART + pykrx 분석/백테스트")
-templates = Jinja2Templates(directory="templates")
-app.mount("/static", StaticFiles(directory="static"), name="static")
+BASE_DIR = Path(__file__).resolve().parent
+templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
 
 # ---------------- Pydantic ----------------
