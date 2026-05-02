@@ -1,5 +1,21 @@
 {
   "version": 2,
+  "functions": {
+    "api/index.py": {
+      "includeFiles": [
+        "main.py",
+        "config.py",
+        "dart_client.py",
+        "price_client.py",
+        "watchlist_store.py",
+        "backtest_engine.py",
+        "buffett_strategy.py",
+        "gpt_analyst.py",
+        "templates/**",
+        "static/**"
+      ]
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
